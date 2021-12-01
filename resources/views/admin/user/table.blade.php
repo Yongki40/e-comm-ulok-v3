@@ -23,6 +23,7 @@
                     <th>Email</th>
                     <th>Nomor Telepon</th>
                     <th>Jenis User</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,19 @@
                             @else
                                 <span>{{ $user->jenis_user }}</span>
                             @endif
+                        </td>
+                        <td>
+                            <form action="/admin/user/editOrDelete/" method="post">
+                                @csrf
+                                <a href="/admin/user/editUser/{{ $user->id }}" class="btn btn-primary">
+                                    Edit
+                                </a>
+                                <button type="submit" class="btn btn-danger" value="{{ $user->id }}"
+                                    name="btnDelete">
+                                    Hapus
+                                </button>
+                            </form>
+
                         </td>
                     </tr>
                 @endforeach

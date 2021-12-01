@@ -28,7 +28,7 @@ class UserController extends Controller
         // return back()->with('users', $users);
     }
 
-    public function TambahUser(Request $req)
+    public function validateUser(Request $req)
     {
         $req->validate([
             'email' => ['required', 'email', 'unique:users,email'],
@@ -51,6 +51,11 @@ class UserController extends Controller
                 return back()->withErrors(['jenis_user' => 'bukan jenis user yang benar']);
             }
         }
+    }
+
+    public function TambahUser(Request $req)
+    {
+        $this->validateUser($req);
 
         User::insert([
             'nama_user' => $req->nama_user,
@@ -61,5 +66,53 @@ class UserController extends Controller
         ]);
 
         return back()->with('msg', 'berhasil masukan user baru');
+    }
+
+    public function editOrDelete(Request $req)
+    {
+        User::find($req->btnDelete)->delete();
+        return back();
+    }
+
+    public function showEdit($id)
+    {
+        $user = User::find($id);
+        return view('admin.user.edit', compact(['user']));
+    }
+
+    public function editUser(Request $req)
+    {
+        $req->validate([
+            'email' => ['required', 'email'],
+            'nama_user' => ['required', 'min:3'],
+            // 'nomor_hp' => ['required', 'min:12', 'max:16', 'unique:users,nomor_hp'],
+        ], [
+            'email.unique' => ':attribute sudah pernah dipakai',
+            'nomor_hp.unique' => 'nomor hp sudah pernah dipakai',
+            'email.required' => ':attribute harus diisi',
+            'email.email' => 'email tidak sesuai format',
+            'nama_user.required' => ':attribute harus diisi',
+            'noHp.required' => ':attribute harus diisi',
+            'password.required' => ':attribute harus diisi',
+            'password.confirmed' => 'password dan konfirmasi tidak sama'
+        ]);
+
+        if ($req->jenis_user != 'customer') {
+            if ($req->jenis_user != 'admin') {
+                return back()->withErrors(['jenis_user' => 'bukan jenis user yang benar']);
+            }
+        }
+
+        $user = User::find($req->idUpdate);
+        // dd($req->input());
+        $user->update([
+            'nama_user' => $req->nama_user,
+            'email' => $req->email,
+            'nomor_hp' => $req->nomor_hp,
+            'jenis_user' => $req->jenis_user,
+            'password' => $user->password,
+        ]);
+
+        return redirect('/admin/user/lihatUser');
     }
 }
