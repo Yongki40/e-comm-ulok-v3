@@ -1,11 +1,7 @@
-@extends('layouts.admin.admin')
-
-@section('jenis_admin', 'User')
-@section('content')
-    @if (\Session::has('msg'))
+@if (\Session::has('msg'))
         <div class="alert alert-success">{{ \Session::get('msg') }}</div>
-    @endif
-    <div class="card card-primary">
+@endif
+<div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Form Admin User</h3>
         </div>
@@ -64,4 +60,3 @@
             </div>
         </form>
     </div>
-@endsection

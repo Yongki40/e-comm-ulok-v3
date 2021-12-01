@@ -10,8 +10,24 @@ class UserController extends Controller
     public function index()
     {
         //landing page admin user
-        return view('admin.user');
+        return view('admin.user.user');
     }
+
+    public function lihatUser()
+    {
+        $users = User::paginate(5);
+        return view('admin.user.lihatUser', compact(['users']));
+    }
+
+    public function cariUser(Request $request)
+    {
+        $nama_user = $request->nama_user;
+        $paginate = $request->paginate == null ? 5 : $request->paginate;
+        $users = User::where('nama_user', 'LIKE', $nama_user . '%')->paginate($paginate);
+        return view('admin.user.lihatUser', compact(['users']));
+        // return back()->with('users', $users);
+    }
+
     public function TambahUser(Request $req)
     {
         $req->validate([

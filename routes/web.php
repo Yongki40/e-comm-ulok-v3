@@ -20,6 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/admin/user', [UserController::class, 'index']);
+Route::get('/admin/user/lihatUser', [UserController::class, 'lihatUser']);
+Route::get('/admin/user/cariUser/{nama_user?}/{paginate?}', [UserController::class, 'cariUser']);
+
 Route::get('/admin/kategori', [KategoriController::class, 'index']);
 Route::get('/admin/produk', [ProdukController::class, 'index']);
 Route::post('/admin/user/TambahUser', [UserController::class, 'TambahUser']);

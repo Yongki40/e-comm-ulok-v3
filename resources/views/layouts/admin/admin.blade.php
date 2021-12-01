@@ -15,12 +15,12 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper" style="height: 100vh">
         <!-- Main Sidebar Container -->
         @include('layouts.admin.sidebar')
 
         {{-- isi dari adminnya --}}
-        <div class="content-wrapper" style="height: 100vh">
+        <div class="content-wrapper">
             <div class="container">
                 <h1>Admin @yield('jenis_admin')</h1>
                 @yield('content')
