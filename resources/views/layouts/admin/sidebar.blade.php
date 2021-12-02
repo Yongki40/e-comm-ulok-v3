@@ -4,7 +4,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
-                <a href="#" class="d-block">[nama user admin nanti]</a>
+                <a href="#" class="d-block">Admin Website Ulos </a>
             </div>
         </div>
 
@@ -96,6 +96,11 @@
                             <a href="./index3.html" class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Dashboard v3</p>
+                            </a>
+                        </li>
+                        <li class="nav-item bg-danger">
+                            <a href="/logout" class="nav-link">
+                                <p>Logout</p>
                             </a>
                         </li>
                     </ul>

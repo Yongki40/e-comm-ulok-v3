@@ -29,19 +29,32 @@
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
                             <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
+                            @error('email')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
+
                     </div>
                     <div class="form-group row">
                         <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" id="inputPassword3" placeholder="Password"
                                 name="password">
+                            @error('password')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
+
                     </div>
+                    @if (\Session::has('msg'))
+                        <div class="alert alert-danger">{{ \Session::get('msg') }}</div>
+                    @endif
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-info">Sign in</button>
+                    <button type="submit" class="btn btn-info">Login</button>
+                    <a href="/register" class=" btn btn-info">ke Register</a>
+                    <a href="/" class=" btn btn-info">Kembali ke Home</a>
                 </div>
                 <!-- /.card-footer -->
             </form>
