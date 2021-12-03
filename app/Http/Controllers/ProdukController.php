@@ -25,6 +25,7 @@ class ProdukController extends Controller
             'stok' => $request->stok,
             'deskripsi' => $request->deskripsi,
             'kategori_id' => $request->kategori_id,
+            'created_at' => now(),
         ]);
         return back()->with('msg', 'berhasil masukan produk baru');
     }
@@ -53,6 +54,18 @@ class ProdukController extends Controller
         $products = Product::where('nama', 'LIKE', $nama . '%')->paginate($paginate);
         return view('admin.product.lihatProduct', compact(['products']));
     }
+
+    public function cariProductHome(Request $request)
+    {
+        $nama = $request->nama;
+        $paginate = $request->paginate == null ? 5 : $request->paginate;
+        $products = Product::where('nama', 'LIKE', $nama . '%')->paginate($paginate);
+        $url_form = '/shop/cariProduct';
+        $url_detail = '/shop/detail/';
+        $placeholder = 'Nama Produk yang dicari';
+        return view('shop', compact(['products', 'url_form', 'placeholder']));
+    }
+
     public function editOrDelete(Request $req)
     {
         Product::find($req->btnDelete)->delete();
@@ -94,5 +107,22 @@ class ProdukController extends Controller
 
 
         return redirect('/admin/produk/lihatProduct');
+    }
+
+    public function detailProduct($id)
+    {
+        $product = Product::find($id);
+        $relevans = $product->kategori->product->sortByDesc('created_at')->take(2);
+        // dd($relevans);
+        return view('detail', compact(['product', 'relevans']));
+    }
+
+    public function showAll()
+    {
+        $products = Product::paginate(8);
+        $url_form = '/shop/cariProduct';
+        $url_detail = '/shop/detail/';
+        $placeholder = 'Nama Produk yang dicari';
+        return view('shop', compact(['products', 'url_form', 'placeholder', 'url_detail']));
     }
 }

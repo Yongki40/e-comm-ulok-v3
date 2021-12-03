@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -21,6 +22,7 @@ class KategoriController extends Controller
             'nama' => $request->nama,
             'gambar' => "/kategoris/" . $imageName,
             'slug' => $slug,
+            'created_at' => now(),
         ]);
 
         return back()->with('msg', 'berhasil masukan kategori baru');
@@ -83,5 +85,36 @@ class KategoriController extends Controller
         }
 
         return redirect('/admin/kategori/lihatKategori');
+    }
+
+    public function cariProductHome(Request $request)
+    {
+        $nama = $request->nama;
+        $paginate = $request->paginate == null ? 5 : $request->paginate;
+        $products = Kategori::where('nama', 'LIKE', $nama . '%')->paginate($paginate);
+        $url_form = '/kategori/cariKategori';
+        $url_detail = '/kategori/detail/';
+        $placeholder = 'Nama Kategori yang dicari';
+        return view('kategori', compact(['products', 'url_form', 'placeholder']));
+    }
+
+    public function showAll()
+    {
+        $products = Kategori::paginate(8);
+        $url_form = '/kategori/cariKategori';
+        $url_detail = '/kategori/detail/';
+        $placeholder = 'Nama Kategori yang dicari';
+        return view('shop', compact(['products', 'url_form', 'placeholder', 'url_detail']));
+    }
+
+    public function kategoriDetail($slug)
+    {
+        $kategori = Kategori::where('slug', $slug)->first();
+        $products = Product::where('kategori_id', $kategori->id)->paginate(8);
+
+        $url_form = '/shop/cariProduct';
+        $url_detail = '/shop/detail/';
+        $placeholder = 'Nama Produk yang dicari';
+        return view('shop', compact(['products', 'url_form', 'placeholder', 'url_detail', 'kategori']));
     }
 }

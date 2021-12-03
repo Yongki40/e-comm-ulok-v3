@@ -1,6 +1,6 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 100vh">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="min-height: 120vh">
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" style="overflow-y: hidden;">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
@@ -101,6 +101,11 @@
                         <li class="nav-item bg-danger">
                             <a href="/logout" class="nav-link">
                                 <p>Logout</p>
+                            </a>
+                        </li>
+                        <li class="nav-item bg-success">
+                            <a href="/" class="nav-link">
+                                <p>Home</p>
                             </a>
                         </li>
                     </ul>

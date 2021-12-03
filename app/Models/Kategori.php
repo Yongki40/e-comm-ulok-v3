@@ -15,6 +15,12 @@ class Kategori extends Model
     public $incrementing    = true;
     public $timestamps      = true;
 
+    protected $fillable = ['created_at'];
     public $guarded = ['deleted_at'];
     use SoftDeletes;
+
+    public function product()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

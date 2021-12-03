@@ -10,13 +10,14 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $isLogin = json_decode($request->cookie('isLogin'));
-        $products = Product::all()->take(4);
-        if (!$isLogin) {
-            return view('home', compact(['products']));
-        }
+        //ganti sama yang terlaku 3
+        $products_caro = Product::all()->take(3);
 
-        return view('home', compact(['isLogin', 'products']));
+        //ganti take sama last 4
+        $products = Product::all()->sortByDesc('created_at')->take(4);
+
+        $url_detail = '/shop/detail/';
+        return view('home', compact(['products', 'products_caro', 'url_detail']));
     }
 
     public function logout(Request $request)

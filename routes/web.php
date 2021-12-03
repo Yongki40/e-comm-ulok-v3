@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LogindanRegisterController;
@@ -25,6 +26,19 @@ Route::get('/login', [LogindanRegisterController::class, 'showLogin']);
 Route::post('/login', [LogindanRegisterController::class, 'login']);
 Route::get('/register', [LogindanRegisterController::class, 'showRegister']);
 Route::post('/register', [LogindanRegisterController::class, 'register']);
+
+Route::get('/shop', [ProdukController::class, 'showAll']);
+Route::get('/shop/cariProduct/{nama_Product?}/{paginate?}', [ProdukController::class, 'cariProductHome']);
+Route::get('/shop/detail/{id}', [ProdukController::class, 'detailProduct']);
+
+Route::post('/shop/tambahkanCart', [CartController::class, 'tambahkanCart']);
+Route::get('/cart', [CartController::class, 'showCart']);
+Route::get('/cart/tambah/{id}', [CartController::class, 'plusItem']);
+Route::get('/cart/kurang/{id}', [CartController::class, 'minItem']);
+
+Route::get('/kategori', [KategoriController::class, 'showAll']);
+Route::get('/kategori/cariKategori/{nama_Product?}/{paginate?}', [KategoriController::class, 'cariProductHome']);
+Route::get('/kategori/detail/{slug}', [KategoriController::class, 'kategoriDetail']);
 
 Route::group(['middleware' => ['isAdmin']], function () {
     Route::get('/admin/user', [UserController::class, 'index']);
