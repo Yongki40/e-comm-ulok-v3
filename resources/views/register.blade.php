@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Webite Ulos</title>
+    <link rel="icon" href="{{ asset('images/logo_ulos.jpg') }}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
@@ -71,13 +72,6 @@
                             <input type="password" class="form-control" id="inputPassword3" placeholder="Password"
                                 name="password_confirmation">
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label>Jenis User</label>
-                        <select class="form-control" name="jenis_user">
-                            <option value="customer">Customer</option>
-                            <option value="admin">Admin</option>
-                        </select>
                     </div>
                     @if (\Session::has('msg'))
                         <div class="alert alert-success">{{ \Session::get('msg') }}</div>

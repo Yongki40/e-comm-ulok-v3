@@ -30,6 +30,14 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="exampleInputEmail1">Saldo</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" value="{{ $user->saldo }}"
+                        name="saldo">
+                    @error('saldo')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="exampleInputEmail1">Nomor HP</label>
                     <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Masukan Nomor Telepon"
                         name="nomor_hp" value="{{ $user->nomor_hp }}">

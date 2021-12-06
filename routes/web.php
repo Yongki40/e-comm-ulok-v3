@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LogindanRegisterController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,18 +30,37 @@ Route::post('/login', [LogindanRegisterController::class, 'login']);
 Route::get('/register', [LogindanRegisterController::class, 'showRegister']);
 Route::post('/register', [LogindanRegisterController::class, 'register']);
 
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm']);
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm']);
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm']);
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm']);
+
 Route::get('/shop', [ProdukController::class, 'showAll']);
 Route::get('/shop/cariProduct/{nama_Product?}/{paginate?}', [ProdukController::class, 'cariProductHome']);
 Route::get('/shop/detail/{id}', [ProdukController::class, 'detailProduct']);
 
-Route::post('/shop/tambahkanCart', [CartController::class, 'tambahkanCart']);
-Route::get('/cart', [CartController::class, 'showCart']);
-Route::get('/cart/tambah/{id}', [CartController::class, 'plusItem']);
-Route::get('/cart/kurang/{id}', [CartController::class, 'minItem']);
+Route::group(['middleware' => ['alreadyLogin']], function () {
+    Route::get('/profile', [ProfileController::class, 'showProfile']);
+    Route::post('/profile/topUp', [ProfileController::class, 'topUp']);
+    Route::post('/shop/tambahkanCart', [CartController::class, 'tambahkanCart']);
+    Route::get('/cart', [CartController::class, 'showCart']);
+    Route::get('/cart/tambah/{id}', [CartController::class, 'plusItem']);
+    Route::get('/cart/kurang/{id}', [CartController::class, 'minItem']);
+    Route::get('/cart/pageCheckOut', [CartController::class, 'pageCheckOut']);
+    Route::post('/cart/checkout', [CartController::class, 'checkout']);
+    Route::get('/wishlist', [WishController::class, 'showWish']);
+    Route::get('/wishlist/tambah/{id}', [WishController::class, 'tambahWish']);
+    Route::get('/wishlist/hapus/{id}', [WishController::class, 'hapusWish']);
+    Route::get('/thankYou', [CartController::class, 'thankYou']);
+});
 
 Route::get('/kategori', [KategoriController::class, 'showAll']);
 Route::get('/kategori/cariKategori/{nama_Product?}/{paginate?}', [KategoriController::class, 'cariProductHome']);
 Route::get('/kategori/detail/{slug}', [KategoriController::class, 'kategoriDetail']);
+
+Route::get('/aboutUs', function () {
+    return view('aboutUs');
+});
 
 Route::group(['middleware' => ['isAdmin']], function () {
     Route::get('/admin/user', [UserController::class, 'index']);

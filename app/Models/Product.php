@@ -16,7 +16,6 @@ class Product extends Model
     public $timestamps      = true;
 
     public $guarded = ['deleted_at'];
-    protected $fillable = ['created_at'];
     use SoftDeletes;
 
     public function kategori()

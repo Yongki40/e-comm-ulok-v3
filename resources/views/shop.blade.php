@@ -6,9 +6,6 @@
 
 </style>
 @section('content')
-    <div class="top-header">
-        @include('layouts.navbar')
-    </div>
     <div class="shoes" style="margin-top: -6%;">
         <div class="container">
             @if (isset($kategori))
@@ -19,17 +16,20 @@
 
             @include('layouts.formPencarian')
             @include('layouts.products')
-            <div class="d-flex justify-content-around font-paginate-link">
-                Halaman {{ $products->currentPage() }} dari {{ $products->lastPage() }}
-                <ul class="pagination pagination-sm m-0 float-right">
-                    <li class="page-item"><a class="page-link" style="font-size: 15pt;"
-                            href="{{ $products->appends($_GET)->previousPageUrl() }}">Sebelum</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" style="font-size: 15pt;"
-                            href="{{ $products->appends($_GET)->nextPageUrl() }}">Selanjutnya</a>
-                    </li>
-                </ul>
-            </div>
+            @if ($products->count() > 0)
+                <div class="d-flex justify-content-around font-paginate-link">
+                    Halaman {{ $products->currentPage() }} dari {{ $products->lastPage() }}
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item"><a class="page-link" style="font-size: 15pt;"
+                                href="{{ $products->appends($_GET)->previousPageUrl() }}">Sebelum</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" style="font-size: 15pt;"
+                                href="{{ $products->appends($_GET)->nextPageUrl() }}">Selanjutnya</a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+
 
         </div>
     </div>

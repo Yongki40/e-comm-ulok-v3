@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Models\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class LogindanRegisterController extends Controller
 {
@@ -27,10 +29,16 @@ class LogindanRegisterController extends Controller
         ]);
 
         $isLogin = User::where([
-            ['email', $request->email]
+            ['email', $request->email],
         ])->first();
+        $isValid = password_verify($request->password, $isLogin->password);
+
         if (!$isLogin) {
-            return back()->with('msg', 'email atau password salah');
+            return back()->with('msg', 'email tidak terdaftar');
+        }
+
+        if (!$isValid) {
+            return back()->with('msg', 'password anda salah');
         }
 
         if ($isLogin->isDeleted) {
@@ -59,18 +67,12 @@ class LogindanRegisterController extends Controller
             'password.confirmed' => 'password dan konfirmasi tidak sama'
         ]);
 
-        if ($request->jenis_user != 'customer') {
-            if ($request->jenis_user != 'admin') {
-                return back()->withErrors(['jenis_user' => 'bukan jenis user yang benar']);
-            }
-        }
-
         User::insert([
             'nama_user' => $request->nama_user,
             'email' => $request->email,
             'nomor_hp' => $request->nomor_hp,
-            'password' => $request->password,
-            'jenis_user' => $request->jenis_user,
+            'password' => Hash::make($request->password),
+            'jenis_user' => 'customer',
         ]);
 
         return back()->with('msg', 'berhasil lakukan register');

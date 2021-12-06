@@ -18,19 +18,26 @@
                                 Lihat Item
                             </a>
                         </span> <br> <br>
-                        <span>Tambahkan ke Favorite</span>
+                        <span>
+                            <a href="/wishlist/tambah/{{ $product->id }}"
+                                style="text-decoration: none; color: white;">
+                                Tambahkan ke Favorite
+                            </a>
+                        </span>
                     </div>
                 @endif
                 <h4>{{ $product->nama }}</h4>
                 @if ($url_detail != '/kategori/detail/')
-                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">Rp.
-                                {{ number_format($product->harga, 0, ',', '.') }}
-                            </span></a></p>
+                    <p><span class=" item_price">Rp.
+                            {{ number_format($product->harga, 0, ',', '.') }}
+                        </span></p>
                 @endif
 
             </div>
         </div>
     @endforeach
-
+    @if ($products->count() == 0)
+        <h1>Tidak ada produk</h1>
+    @endif
     <div class="clearfix"> </div>
 </div>

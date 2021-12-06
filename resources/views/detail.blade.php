@@ -1,8 +1,5 @@
 @extends('layouts.user')
 @section('content')
-    <div class="top-header">
-        @include('layouts.navbar')
-    </div>
     <div class="container mx-10 mt-3 d-flex">
         <form action="/shop/tambahkanCart" method="post">
             @csrf

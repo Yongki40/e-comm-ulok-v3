@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Models\User;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -34,7 +35,8 @@ class UserController extends Controller
             'email' => ['required', 'email', 'unique:users,email'],
             'nama_user' => ['required', 'min:3'],
             // 'nomor_hp' => ['required', 'min:12', 'max:16', 'unique:users,nomor_hp'],
-            'password' => ['required', 'confirmed']
+            'password' => ['required', 'confirmed'],
+            'saldo' => ['required', 'numeric', 'min:1000']
         ], [
             'email.unique' => ':attribute sudah pernah dipakai',
             'nomor_hp.unique' => 'nomor hp sudah pernah dipakai',
@@ -61,8 +63,9 @@ class UserController extends Controller
             'nama_user' => $req->nama_user,
             'email' => $req->email,
             'nomor_hp' => $req->nomor_hp,
-            'password' => $req->password,
+            'password' => Hash::make($req->password),
             'jenis_user' => $req->jenis_user,
+            'saldo' => $req->saldo
         ]);
 
         return back()->with('msg', 'berhasil masukan user baru');
@@ -111,6 +114,7 @@ class UserController extends Controller
             'nomor_hp' => $req->nomor_hp,
             'jenis_user' => $req->jenis_user,
             'password' => $user->password,
+            'saldo' => $req->saldo
         ]);
 
         return redirect('/admin/user/lihatUser');

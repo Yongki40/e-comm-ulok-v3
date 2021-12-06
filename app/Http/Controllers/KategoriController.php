@@ -111,7 +111,6 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::where('slug', $slug)->first();
         $products = Product::where('kategori_id', $kategori->id)->paginate(8);
-
         $url_form = '/shop/cariProduct';
         $url_detail = '/shop/detail/';
         $placeholder = 'Nama Produk yang dicari';

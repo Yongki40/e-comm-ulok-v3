@@ -4,7 +4,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
-                <a href="#" class="d-block">Admin Website Ulos </a>
+                @php
+                    $isLogin = json_decode(request()->cookie('isLogin'));
+                @endphp
+                <span class="d-block text-white fs-5">Admin, {{ $isLogin->nama_user }}</span>
             </div>
         </div>
 
@@ -34,12 +37,6 @@
                                 <p>Tambah User</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="./index3.html" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item has-treeview menu-open">
@@ -63,12 +60,6 @@
                                 <p>Tambah Kategori</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="./index3.html" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item has-treeview menu-open">
@@ -90,12 +81,6 @@
                             <a href="/admin/produk" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tambah Produk</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./index3.html" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
                             </a>
                         </li>
                         <li class="nav-item bg-danger">

@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Webiste Ulos</title>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
+    <link rel="icon" href="{{ asset('images/logo_ulos.jpg') }}">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.js') }}"> </script>
@@ -57,10 +58,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             $(".memenu").memenu();
         });
     </script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
+    <div class="top-header">
+        @include('layouts.navbar')
+    </div>
     @yield('content')
 </body>
+<footer>
+    @include('layouts.footer')
+</footer>
 
 </html>

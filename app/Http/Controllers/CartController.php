@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Product;
+use App\Models\Td_Jual;
+use App\Models\Th_Jual;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -46,9 +49,6 @@ class CartController extends Controller
         if ($product->stok < $request->jumlah) {
             return back()->with('msg', 'stok tidak mencukupi jumlah yang anda mau');
         }
-
-        // $request->session()->push('cart.' . $isLogin->nomor_hp, $product);
-        // dd($request->session()->get('cart.' . $isLogin->nomor_hp));
 
         if ($request->session()->has('cart.' . $isLogin->nomor_hp)) {
             $cartUser = $request->session()->get('cart.' . $isLogin->nomor_hp);
@@ -110,10 +110,77 @@ class CartController extends Controller
         }
 
         if (!$isValid) {
-            return back()->with('msg', 'stok tidak mencukupi');
+            return back()->with('msg', 'stok barang tidak mencukupi');
         }
 
         $request->session()->put('cart.' . $isLogin->nomor_hp, $cartUser);
         return back();
+    }
+
+
+    public function pageCheckOut(Request $request)
+    {
+        $isLogin = json_decode($request->cookie('isLogin'));
+        $cartUser = $request->session()->get('cart.' . $isLogin->nomor_hp);
+        $total = 0;
+        foreach ($cartUser as $cart) {
+            $total += $cart['total'];
+        }
+
+        if ($isLogin->saldo < $total) {
+            return back()->with('pesanSaldo', 'saldo anda kurang harap top up');
+        }
+        return view('pageCheckOut');
+    }
+
+    public function checkout(Request $request)
+    {
+        $request->validate([
+            'alamat' => 'required',
+        ]);
+
+        $isLogin = json_decode($request->cookie('isLogin'));
+        $cartUser = $request->session()->get('cart.' . $isLogin->nomor_hp);
+
+        $total = 0;
+        foreach ($cartUser as $cart) {
+            $total += $cart['total'];
+        }
+
+        Th_Jual::insert([
+            'user_id' => $isLogin->id,
+            'total' => $total,
+            'alamat' => $request->alamat,
+            'created_at' => now()
+        ]);
+
+        $header = Th_Jual::latest()->first();
+
+        foreach ($cartUser as $cart) {
+            Td_Jual::insert([
+                'th__jual_id' => $header->id,
+                'product_id' => $cart['product']->id,
+                'harga' => $cart['product']->harga,
+                'jumlah' => $cart['jumlah'],
+                'subtotal' => $cart['total'],
+                'created_at' => now()
+            ]);
+            $product = Product::find($cart['product']->id);
+            // dd($product->stok - $cart['jumlah']);
+            $product->update(['stok' => $product->stok - $cart['jumlah']]);
+            // dd($product);
+        }
+        $request->session()->forget('cart.' . $isLogin->nomor_hp);
+        $user = User::find($isLogin->id);
+        $user->update([
+            'saldo' => $user->saldo - $total
+        ]);
+        $isLogin = $user;
+        return redirect('/thankYou');
+    }
+
+    public function thankYou(Request $request)
+    {
+        return view('thankYou');
     }
 }

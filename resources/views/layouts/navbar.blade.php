@@ -8,6 +8,14 @@
         @endphp
         @if ($isLogin)
             <span style="font-size:20pt;">Welcome, {{ $isLogin->nama_user }}</span>
+            @if ($isLogin->jenis_user == 'admin')
+                <a href="/admin/produk/lihatProduct" style="text-decoration:none;padding-left: 10px;">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+            @endif
+            <a href="/wishlist" style="text-decoration:none;padding-left: 10px;">
+                <img src="{{ asset('/images/wish.png') }}" alt="" style="margin-top:-1vh; width:25px;">
+            </a>
             <a href="/cart" style="text-decoration:none;padding-left: 10px;">
                 <img src="{{ asset('/images/cart.png') }}" alt="" style="margin-top:-1vh;">
             </a>
